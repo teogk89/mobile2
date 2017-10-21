@@ -20,6 +20,52 @@ class AdminController extends Controller
         $this->theme = 'webarch';
     }
 
+    public function ticketstatuslist(){
+
+        $this->data['status'] = \App\Model\TicketStatus::all();
+        $theme = $this->theme;
+        return view($theme.'.admin.ticket-status-list',$this->data);
+
+
+    }
+
+    public function ticketstatussave(Request $request){
+
+
+        $post = $request->all();
+
+        if($post['state'] == 'new'){
+
+             $status = new \App\Model\TicketStatus();
+
+            
+            
+
+        }
+        if($post['state'] == 'edit'){
+
+             $status = \App\Model\TicketStatus::find($post['id']);   
+
+        }
+
+        $status->fill($post);
+        $status->save();   
+        return redirect()->back()->with('success','Status has been saved !');
+
+    }
+    public function ticketstatusadd($id = null){
+        if($id != null){
+
+            $this->data['state'] = 'edit';
+            $this->data['status'] = \App\Model\TicketStatus::find($id);
+        }else{
+
+            $this->data['state'] = 'new';
+        }
+        
+        $theme = $this->theme;
+        return view($theme.'.admin.ticket-status-add',$this->data);
+    }
     public function profile(Request $request){
 
         $user = \Auth::user();
@@ -703,7 +749,9 @@ class AdminController extends Controller
         if($type == 'status-add'){
 
              $status = new \App\Model\TicketDetail();   
-             $status->detail = ($request->has('detail') ? $request->input("detail"):null);
+
+             $status->ticket_status_id = $post['ticket_status_id'];
+          //   $status->detail = ($request->has('detail') ? $request->input("detail"):null);
              $status->ticket_id = $request->input("id");
              $status->ticket_status = $post['xstatus'];
 
@@ -718,7 +766,21 @@ class AdminController extends Controller
              $ticket = \App\Model\Ticket::find($status->ticket_id);
              $ticket->repair_status = ($request->has('detail') ? $request->input("detail"):null);
              $ticket->save();
-            $status->save();
+             $status->save();
+
+             $current_status = \App\Model\CurrentTicketStatus::find($ticket->ticket_id);
+
+             if($current_status == null){
+
+                $current_status = new \App\Model\CurrentTicketStatus();
+                $current_status->ticket_id = $ticket->ticket_id;
+
+
+             }
+             $current_status->ticket_id_status = $post['ticket_status_id'];
+             $current_status->description = $post['xstatus'];
+             $current_status->ticket_detail_id = $status->ticket_detail_id;
+             $current_status->save();
             return redirect()->back()->with("success","Status #".$status->ticket_detail_id." has been added !");
         }
 

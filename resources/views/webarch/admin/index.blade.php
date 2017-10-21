@@ -2,7 +2,17 @@
 
 
 @section('content')
+<style>
 
+.box {
+  float: left;
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+  border: 1px solid rgba(0, 0, 0, .2);
+}
+
+</style>
 <div class="clearfix"></div>
 <div id="container">
 	<div class="row">
@@ -52,7 +62,13 @@
 										<td><?php echo $t->ticket_date ?></td>
 										<td><?php echo $t->name ?></td>
 										<td><?php echo $t->phone_model.' '.$t->phone_type ?></td>
-										<td><?php echo $t->repair_status ?></td>
+										@if($t->current_status != null)
+
+										<td><div data-toggle="tooltip" title="{{$t->current_status->status->startus}} - {{ $t->current_status->description}}" style="background:{{ $t->current_status->status->colors }};"class="box blue"></div></td>
+										@else
+										<td></td>
+										@endif
+										
 										
 										<td>
 											<a href="{{ route("admin-edit-ticket",['id'=>$t->ticket_id])}}"><i class="fa fa-edit"></i></a>
@@ -100,6 +116,6 @@ $("#go").click(function(e){
 	window.location.replace(url);
 });
 
-
+ $('[data-toggle="tooltip"]').tooltip(); 
 </script>
 @endpush

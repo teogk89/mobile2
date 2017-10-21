@@ -64,6 +64,10 @@ class TicketDetail extends Model
         
     }
 
- 
+    public function status(){
+
+
+          return $this->hasOne('App\Model\TicketStatus','id','ticket_status_id');
+    }
 
 }

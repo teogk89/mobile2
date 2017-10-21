@@ -194,6 +194,12 @@ class Ticket extends Model
 
     }
 
+    public function current_status(){
+
+
+          return $this->hasOne('App\Model\CurrentTicketStatus','ticket_id','ticket_id');
+    }
+
     public function deleteAll(){
 
 

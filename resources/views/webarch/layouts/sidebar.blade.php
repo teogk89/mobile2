@@ -16,6 +16,9 @@
                 <li>
                   <a href="{{route('admin-ticket-by-type',['type'=>0,'per'=>15]) }}">  <span class="title">All tickets</span> </a>
                 </li>
+                 <li>
+                  <a href="{{route('admin-ticket-status-list') }}">  <span class="title">Ticket status </span> </a>
+                </li>
                
                 <li>
                   <a href="javascript:;">  <span class="title">User </span> <span class=" arrow"></span>

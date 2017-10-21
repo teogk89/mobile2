@@ -26,12 +26,17 @@
 							<label class="form-label"></label>
 							<span class="help"></span>
 							<div class="controls">
-								<select name="detail" id="xsoption" class="form-control input-large">
+								<select name="ticket_status_id" id="xsoption" class="form-control input-large">
 		<option value="" selected="selected" disabled="">{{ PLEASE_SELECT }}</option>
-       		@foreach($repair_status_options as $repair_status)
+		<?php
+			$mystatus = \App\Model\TicketStatus::all();	
 
-       		<option value="{{ $repair_status }}">{{ $repair_status }}</option>
-       		@endforeach
+		?>
+			@foreach($mystatus as $status)
+			<option value="{{ $status->id}}">{{ $status->startus }}</option>
+
+			@endforeach
+       		
        	</select>
 							</div>
 						</div>

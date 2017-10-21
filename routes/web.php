@@ -135,8 +135,9 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::get('/admin/bytype?type={type}&per={per}','AdminController@index')->name('admin-ticket-by-type2');
 
 	
-	
-
+	Route::get('/admin/ticket/status-list','AdminController@ticketstatuslist')->name('admin-ticket-status-list');
+	Route::get('/admin/ticket/status-add/{id?}','AdminController@ticketstatusadd')->name('admin-ticket-status-add');
+	Route::post('/admin/ticket/status-save','AdminController@ticketstatussave')->name('admin-ticket-status-save');
 	//Route::post('/admin/invoice/edits','AdminController@postInvoiceEdits')->name('admin-invoice-edit');
 
 	
