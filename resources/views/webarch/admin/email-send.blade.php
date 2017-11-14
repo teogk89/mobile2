@@ -43,6 +43,19 @@
                           </div>
                         </div>
                         <div class="row">
+                          <div class="form-group col-md-12">
+                            <label class="form-label">Signature</label>
+                            <span class="help"></span>
+                            <div class="controls">
+                              <?php 
+                                  $setting2 = \DB::table('settings2')->where('name','email-signature')->first();
+                   
+                              ?>
+                              <textarea style="height: 200px;" class="form-control" name="content" required>{{ $setting2->myvalue }}</textarea>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
                         	<div class="form-group col-md-12">
                         	<div class="controls">
                             <table>

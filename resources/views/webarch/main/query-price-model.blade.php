@@ -35,7 +35,7 @@
 								<div class="col-md-2">
 
 									@if($b->imageAvailable())
-									<a><img style="width:100%" src="<?php echo $b->imageUrl() ?>"/></a>
+									<a href="<?php echo  route('guest-price-model',['id'=>$b->id])?>"><img style="width:100%" src="<?php echo $b->imageUrl() ?>"/></a>
 									@endif
 									<a href="<?php echo  route('guest-price-model',['id'=>$b->id])?>"><h4 style="text-align: center;"><?php echo $b->mdname ?></h4></a>
 								</div>

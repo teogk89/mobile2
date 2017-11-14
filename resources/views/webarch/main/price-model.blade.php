@@ -28,7 +28,8 @@
 													<th>Vraag/Klacht</th>
 													
 													<th></th>
-													<th>Prijs</th>
+													<th>Prijs <i class="fa fa-eur"></i></th>
+												
 													<th></th>
 												</thead>
 												<tbody>
@@ -45,8 +46,9 @@
 															@endif
 														</td>
 														<td>
-															{{ $q->question_price}}
+															{{ $q->question_price}} 
 														</td>
+														
 														<td>
 															<input class="price" type="checkbox" value="{{ $q->question_price }}"/>
 														</td>

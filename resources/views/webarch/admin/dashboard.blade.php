@@ -14,7 +14,7 @@
 
 		<div class="col-md-3 col-sm-6 spacing-bottom-sm spacing-bottom">
 
-                <div class="tiles {{$m['color']}} added-margin">
+                <div class="tiles {{$m['color']}} added-margin" style="background-color:{{ $m['color'] }}">
                   <div class="tiles-body">
                     <div class="controller">
                       <a href="javascript:;" class="reload"></a>

@@ -20,23 +20,28 @@
 			<div class="grid simple">
 				<div class="grid-body">
 
-
+							
 
 							<div class="row">
 								<div class="col-md-12">
 
 					
 									<select id='mytype'>
-									
-										@foreach ($typecolec as $m=>$ty)
+										<option value="{{ route('admin-ticket-by-type',['type'=>'all','per'=>$per]) }}" <?php echo ($type == 'all' ? 'selected="selected"':'') ?> >All ({{ $ticket_all_count }})</option>
+										<option value="{{ route('admin-ticket-by-type',['type'=>'today','per'=>$per]) }}" <?php echo ($type == 'today' ? 'selected="selected"':'') ?>>Today ({{ $ticket_today }})</option>
+										<option value="{{ route('admin-ticket-by-type',['type'=>'nostatus','per'=>$per]) }}" <?php echo ($type == 'nostatus' ? 'selected="selected"':'') ?>>No Status ({{ $ticket_no_status}})</option>
+										<?php
 
-											@if($m == $type)
-											<option value="{{ route('admin-ticket-by-type',['type'=>$m,'per'=>$per]) }}" selected="selected"><?php echo $ty ?> (<?php echo \Helper::status_count($m)  ?>)</option>
-											@else
-											<option value="{{ route('admin-ticket-by-type',['type'=>$m,'per'=>$per]) }}"><?php echo $ty ?> (<?php echo \Helper::status_count($m)  ?>)</option>
-											@endif
-											
+										$ticket_status = \App\Model\TicketStatus::where('active',1)->get();
+
+										?>
+
+										@foreach($ticket_status as $ticket_status)
+
+										<option value="{{ route('admin-ticket-by-type',['type'=>$ticket_status->id,'per'=>$per]) }}" <?php echo ($ticket_status->id == $type ? 'selected="selected"':'') ?>>{{ $ticket_status->startus }} ({{ $ticket_status->currentStatus->count() }})</option>
+
 										@endforeach
+										
 									</select>
 									<button id="go" type="button" class="btn btn-primary btn-cons">Ok</button>
 								</div>

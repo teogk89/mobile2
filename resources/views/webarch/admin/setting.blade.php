@@ -61,21 +61,35 @@
 						</div>
 						<div class="col-md-8">
 							<div class="form-group">
-                        		<label class="form-label semi-bold"><strong>GooglePlus</strong></label>
-                        		<span class="help"></span>
-                        		<div class="controls">
-                          			<input class="form-control" type="text" name="googleplus" value="{{ $setting->googleplus}}">
-                        		</div>
-                      		</div>
-                      		<div class="form-group">
-                        		<label class="form-label"><strong>GooglePlus Message</strong></label>
-                        		<span class="help"></span>
-                        		<div class="controls">
-                          			<textarea class="form-control" name="googleplus_message">{{ $setting->	googleplus_message}}</textarea>
-                        		</div>
-                      		</div>
+              		<label class="form-label semi-bold"><strong>GooglePlus</strong></label>
+              		<span class="help"></span>
+              		<div class="controls">
+                			<input class="form-control" type="text" name="googleplus" value="{{ $setting->googleplus}}">
+            		  </div>
+              </div>
+          		<div class="form-group">
+            		<label class="form-label"><strong>GooglePlus Message</strong></label>
+            		<span class="help"></span>
+            		<div class="controls">
+              			<textarea class="form-control" name="googleplus_message">{{ $setting->	googleplus_message}}</textarea>
+            		</div>
+          		</div>
                       		
 						</div>
+            <div class="col-md-8">
+              <div class="form-group">
+                <label class="form-label"><strong>Email signature</strong></label>
+                <span class="help"></span>
+                <div class="controls">
+                    <?php 
+                        $setting2 = \DB::table('settings2')->where('name','email-signature')->first();
+                    //$email_signature = "";
+                    ?>
+                    <textarea class="form-control" name="email_signature">{{ $setting2->myvalue}}</textarea>
+                </div>
+              </div>
+
+            </div>
 						<div class="col-md-8">
 							
                       		<div class="form-group">

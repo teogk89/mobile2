@@ -26,10 +26,10 @@
 							<label class="form-label"></label>
 							<span class="help"></span>
 							<div class="controls">
-								<select name="ticket_status_id" id="xsoption" class="form-control input-large">
+								<select name="ticket_status_id" id="xsoption" class="form-control input-large" required>
 		<option value="" selected="selected" disabled="">{{ PLEASE_SELECT }}</option>
 		<?php
-			$mystatus = \App\Model\TicketStatus::all();	
+			$mystatus = \App\Model\TicketStatus::where('active',1)->get();	
 
 		?>
 			@foreach($mystatus as $status)
@@ -51,6 +51,17 @@
 				<textarea maxlength="300" class="form-control" rows="4" name="xstatus" id="xstatus"></textarea> 
 			</div>
 		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+			<label class="form-label">Social email send</label>
+			<div class="controls">
+				<input type="checkbox" name="social_email[]" value="facebook"/> Facebook 
+				<input type="checkbox" name="social_email[]" value="google"/> Twitter
+				<input type="checkbox" name="social_email[]" value="twitter"/> Google
+				<input type="checkbox" name="social_email[]" value="all" /> All
+			</div>
 	</div>
 </div>
 <div class="row">

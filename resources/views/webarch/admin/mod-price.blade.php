@@ -45,7 +45,7 @@
 		<div class="col-md-12">
 			<div class="grid simple">
 				<div class="grid-title no-border">
-                   <div class="grid-body no-border">
+                   <div class="grid-body no-border table-responsive">
                    		<form method="POST" action="{{ route('admin-model-edit',['id'=>$model->id]) }}" enctype="multipart/form-data">
                    			{!! csrf_field() !!}
                    			<table class="table" >
@@ -62,7 +62,7 @@
                    				<tbody>
                    					<tr>
                    						<td>{{ $model->id}}</td>
-                   						<td><input class="form-control" type="text" name="mdname" value="{{ $model->mdname}}" /></td>
+                   						<td><input type="text" name="mdname" value="{{ $model->mdname}}" /></td>
                    						<td>
                    							<select name="brand">
                    								@foreach($brand as $br){
@@ -102,8 +102,8 @@
 				<div class="grid-title no-border">
                    
                 </div>
-                <div class="grid-body no-border">
-					<form method="POST" action="{{ route('admin-mod-price-add',['id'=>$model->id]) }}" enctype="multipart/form-data">
+                <div class="grid-body no-border table-responsive">
+					
 
 					{!! csrf_field() !!}
 					<table class="table" >
@@ -118,14 +118,16 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td><input name="repair_question" type="text" /></td>
-								<td><input name="question_price" type="text" /><i style="padding-top:5px;padding-left:2px" class="fa fa-euro fa-2x" aria-hidden="true"></i></td>
-								<td><input name="image" type="file" /></td>
-								<td><button type="submit" class="btn btn-success btn-cons">Add question</button></td>
+								<form method="POST" action="{{ route('admin-mod-price-add',['id'=>$model->id]) }}" enctype="multipart/form-data">
+									<td><input name="repair_question" type="text" /></td>
+									<td><input name="question_price" type="text" /><i style="padding-top:5px;padding-left:2px" class="fa fa-euro fa-2x" aria-hidden="true"></i></td>
+									<td><input name="image" type="file" /></td>
+									<td><button type="submit" class="btn btn-success btn-cons">Add question</button></td>
+								</form>		
 							</tr>
 						</tbody>
 					</table>
-					</form>		
+					
                 </div>
 			</div>
 		</div>

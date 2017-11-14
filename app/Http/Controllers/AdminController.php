@@ -47,7 +47,14 @@ class AdminController extends Controller
              $status = \App\Model\TicketStatus::find($post['id']);   
 
         }
+        if(isset($post['active'])){
 
+            $status->active = 1;
+        }else{
+
+            $status->active = 0;
+
+        }
         $status->fill($post);
         $status->save();   
         return redirect()->back()->with('success','Status has been saved !');
@@ -205,7 +212,7 @@ class AdminController extends Controller
     public function emailsend(Request $request){
 
       
-         $api = env('MAILGUN_API_KEY');
+        $api = env('MAILGUN_API_KEY');
        
      //  dd($post['file']);
         $mgClient = new Mailgun($api);
@@ -221,7 +228,7 @@ class AdminController extends Controller
            
             'subject' => $request->input('subject'),
           //  'text'    => 'Testing some Mailgun awesomness!',
-            'html'    => $request->input('content')
+            'html'    => $request->input('content').'<br/>'.$request->input('email-signature')
         );
 
         if($request->hasFile("file")){
@@ -258,7 +265,7 @@ class AdminController extends Controller
 
         }
 
-     return redirect()->back()->with('success','email has been sent !');
+        return redirect()->back()->with('success','email has been sent !');
 
      
     }
@@ -389,6 +396,7 @@ class AdminController extends Controller
 
 
         $set->fill($request->all());
+        \DB::table('settings2')->where('name','email-signature')->update(['myvalue'=>$request->input('email_signature')]);
 
         if($request->hasFile('logo')){
 
@@ -629,10 +637,10 @@ class AdminController extends Controller
             'percent'=> 100,
             'name'=>'All tickets',
             'color'=>'blue',
-            'link' => route('admin-ticket-by-type',['type'=>0,'per'=>15])
+            'link' => route('admin-ticket-by-type',['type'=>'all','per'=>15])
 
         ];
-        
+            
 
         $ticket_today = \DB::table('tickets')->where("ticket_date",'>',  Carbon::now()->subDay() )->count();
 
@@ -642,11 +650,32 @@ class AdminController extends Controller
             'count' => $ticket_today,
             'color'=> 'purple',
             'percent'=> \Helper::get_percentage($total,$ticket_today),
-            'link' => route('admin-ticket-by-type',['type'=>12,'per'=>15])
+            'link' => route('admin-ticket-by-type',['type'=>'today','per'=>15])
         ];
         $result[] = $first;
         $result[] = $today;
-        foreach($this->data['repair_status_options'] as $k=>$m){
+
+        $ticket_status = \DB::table('ticket_status')->where('active',1)->get();
+
+        foreach($ticket_status as $k=>$m){
+
+
+            $count = \DB::table('current_ticket_status')->where('ticket_id_status',$m->id)->count();
+            $mycolor = $m->colors;
+            $data = [
+
+                'count' =>$count,
+                'percent'=> \Helper::get_percentage($total,$count),
+                'name' =>$m->startus,
+                'color'=>$mycolor,
+                'link' => route('admin-ticket-by-type',['type'=>$m->id,'per'=>15])
+
+            ];
+
+            $result[] = $data;
+        }
+
+        /*foreach($this->data['repair_status_options'] as $k=>$m){
 
 
             if($m == "All" || $m == 'Today'){
@@ -664,14 +693,14 @@ class AdminController extends Controller
             ];
             $result[] = $data;
 
-        }
-        $other_count = \DB::table("tickets")->whereNotIn('repair_status', $this->data['repair_status_options'])->count();
+        }*/
+        $other_count =  \App\Model\Ticket::doesntHave('current_status')->count();
         $other = [
-            'name'=> "Other",
+            'name'=> "No Status",
             'count'=>$other_count,
             'percent'=>\Helper::get_percentage($total,$other_count),
             'color' => 'green',
-            'link' => route('admin-ticket-by-type',['type'=>13,'per'=>15])
+            'link' => route('admin-ticket-by-type',['type'=>'nostatus','per'=>15])
 
         ];
         $result[]  = $other;
@@ -781,7 +810,10 @@ class AdminController extends Controller
              $current_status->description = $post['xstatus'];
              $current_status->ticket_detail_id = $status->ticket_detail_id;
              $current_status->save();
-            return redirect()->back()->with("success","Status #".$status->ticket_detail_id." has been added !");
+             
+             \Helper::social_email($post['social_email'],$ticket->user_id);
+
+             return redirect()->back()->with("success","Status #".$status->ticket_detail_id." has been added !");
         }
 
         if($type == 'status-update'){
@@ -921,9 +953,36 @@ class AdminController extends Controller
 	   //$tickets = \DB::table('tickets')->orderBy('ticket_id', 'desc')->paginate(10);
 
 
-    	 $tickets = $this->gettype($type,$per);
+    	 //$tickets = $this->gettype($type,$per);
+
+        // $tickets = \App\Model\Ticket::has('current_status',)   
+
+        if($type == 'all'){
 
 
+            $tickets = \App\Model\Ticket::paginate($per);
+        }elseif($type == 'nostatus'){
+
+            $tickets = \App\Model\Ticket::doesntHave('current_status')->paginate($per);
+
+
+        }elseif($type == 'today'){
+
+
+            $tickets = \App\Model\Ticket::where("ticket_date",'>',  Carbon::now()->subDay() )->paginate($per);
+
+
+        }else{
+
+             $tickets = \App\Model\Ticket::whereHas('current_status',function($q)use($type){
+
+            $q->where('ticket_id_status',$type);
+
+         })->paginate($per);
+        }
+         $this->data['ticket_all_count']  =    \App\Model\Ticket::count();
+         $this->data['ticket_no_status']  =    \App\Model\Ticket::doesntHave('current_status')->count();
+         $this->data['ticket_today'] = \DB::table('tickets')->where("ticket_date",'>',  Carbon::now()->subDay() )->count();    
     	 $this->data['typecolec'] = \Helper::repair_status();
 
     	 $this->data['tickets'] = $tickets;
@@ -931,7 +990,7 @@ class AdminController extends Controller
     	 $this->data['per'] = $per;
          $this->data['repair_status_options'] = \Helper::repair_status();
          $theme = $this->theme;
-
+     
     	 return view($theme.'.admin.index',$this->data);
  
 

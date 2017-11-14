@@ -95,6 +95,26 @@
 									
 									</div>	
 								</div>
+								<div class="form-group">
+									<label class="form-label">
+									
+									</label>
+									<div class="controls">
+										<input type="checkbox" name="active" value="1"<?php  
+
+											if(isset($status) && ($status->active != 0 )){
+
+												echo 'checked';
+											}
+
+											if(!isset($status)){
+
+												echo 'checked';
+											}
+
+										?>> Active<br>
+									</div>
+								</div>
 								<div class="form-actions">
                       				<div class="">
                         				<button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> Save</button>

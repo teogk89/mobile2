@@ -102,12 +102,17 @@ $('.sendClick').click(function(){
 	var object = $(this);
 	bootbox.confirm("Are you sure",function(result){
 
+		if(result == true){
+
 		var send = {_token:token,id:id,type:'social',social:type};
 		console.log(result);
 
 		object.removeClass('isubbmited_no');
 		object.addClass('isubbmited');
 		$.post(url,send);
+
+		}
+		
 	});
 });
 

@@ -11,4 +11,14 @@ class TicketStatus extends Model
     public $table = "ticket_status";
 
     protected $fillable = ['startus','description','colors'];
+
+
+
+
+
+    public function currentStatus(){
+
+
+    	return $this->hasMany('App\Model\CurrentTicketStatus','ticket_id_status','id');
+    }
 }

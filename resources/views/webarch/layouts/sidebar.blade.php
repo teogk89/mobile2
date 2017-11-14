@@ -14,7 +14,7 @@
                 </li>
                  
                 <li>
-                  <a href="{{route('admin-ticket-by-type',['type'=>0,'per'=>15]) }}">  <span class="title">All tickets</span> </a>
+                  <a href="{{route('admin-ticket-by-type',['type'=>'all','per'=>15]) }}">  <span class="title">All tickets</span> </a>
                 </li>
                  <li>
                   <a href="{{route('admin-ticket-status-list') }}">  <span class="title">Ticket status </span> </a>

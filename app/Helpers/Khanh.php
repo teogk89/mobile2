@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Helpers;
-
+use Mailgun\Mailgun;
 
 class Khanh{
 
@@ -11,6 +11,17 @@ class Khanh{
 		return '<h4>Hello</h4>';
 	}
 
+
+	static function social_email($social,$user_id){
+
+		foreach($social as $m){
+
+			$user = \App\User::find($user_id);
+			$user->sendEmailSocial($m);
+
+		}
+
+	}
 	static function country(){
 
 		return array('Belgie','Nederland');//countries

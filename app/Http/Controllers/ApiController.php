@@ -61,7 +61,7 @@ class ApiController extends Controller
 
             $user = \App\User::find($id);
             $result = $user->sendEmailSocial($type);
-             dd($result);
+            dd($result);
 
         }
 
