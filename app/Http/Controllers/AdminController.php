@@ -811,7 +811,11 @@ class AdminController extends Controller
              $current_status->ticket_detail_id = $status->ticket_detail_id;
              $current_status->save();
              
-             \Helper::social_email($post['social_email'],$ticket->user_id);
+             if(isset($post['social_email']) && $ticket->user_id != null){
+
+                \Helper::social_email($post['social_email'],$ticket->user_id);
+             }
+             
 
              return redirect()->back()->with("success","Status #".$status->ticket_detail_id." has been added !");
         }
