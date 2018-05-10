@@ -12,4 +12,3 @@ npm-debug.log
 /storage/app/*
 /storage/framework/*
 /storage/logs/*
-composer.lock
